@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reservas",
+  "info": {
+    "singularName": "reserva",
+    "pluralName": "reservas",
+    "displayName": "Reserva",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre_cliente": {
+      "type": "string"
+    },
+    "telefono_cliente": {
+      "type": "string"
+    },
+    "fecha_hora": {
+      "type": "datetime"
+    },
+    "cantidad_personas": {
+      "type": "integer"
+    },
+    "mesa": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::mesa.mesa",
+      "inversedBy": "reservas"
+    },
+    "email_cliente": {
+      "type": "email"
+    }
+  }
+}

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "platillo",
     "pluralName": "platillos",
-    "displayName": "Platillo"
+    "displayName": "Platillo",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -21,14 +22,26 @@
       "type": "decimal"
     },
     "foto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "pedidos": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::pedido.pedido",
+      "mappedBy": "platillos"
+    },
+    "receta": {
+      "type": "component",
+      "repeatable": true,
+      "component": "recetas.ingrediente-receta"
     }
   }
 }

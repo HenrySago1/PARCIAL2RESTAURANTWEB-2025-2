@@ -19,6 +19,7 @@ services:
       DATABASE_PASSWORD: strapi          # ¡Simple para local!
 
       # --- Claves de Seguridad (¡Cámbialas!) ---
+      TZ: "America/La_Paz"
       JWT_SECRET: 'un-secreto-jwt-muy-seguro-para-local-1234'
       ADMIN_JWT_SECRET: 'un-secreto-admin-muy-seguro-para-local-5678'
 

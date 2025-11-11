@@ -362,6 +362,74 @@ export interface AdminUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiFacturaFactura extends Schema.CollectionType {
+  collectionName: 'facturas';
+  info: {
+    displayName: 'Factura';
+    pluralName: 'facturas';
+    singularName: 'factura';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::factura.factura',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    metodo_pago: Attribute.Enumeration<['Efectivo', 'QR', 'Tarjeta']>;
+    monto_total: Attribute.Decimal;
+    pedido: Attribute.Relation<
+      'api::factura.factura',
+      'oneToOne',
+      'api::pedido.pedido'
+    >;
+    publishedAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::factura.factura',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiInsumoInsumo extends Schema.CollectionType {
+  collectionName: 'insumos';
+  info: {
+    displayName: 'Insumo';
+    pluralName: 'insumos';
+    singularName: 'insumo';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::insumo.insumo',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    nombre: Attribute.String;
+    publishedAt: Attribute.DateTime;
+    stock_actual: Attribute.Decimal;
+    unidad_medida: Attribute.String;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::insumo.insumo',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiMesaMesa extends Schema.CollectionType {
   collectionName: 'mesas';
   info: {
@@ -378,6 +446,11 @@ export interface ApiMesaMesa extends Schema.CollectionType {
     createdBy: Attribute.Relation<'api::mesa.mesa', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     numero: Attribute.String;
+    pedidos: Attribute.Relation<
+      'api::mesa.mesa',
+      'oneToMany',
+      'api::pedido.pedido'
+    >;
     publishedAt: Attribute.DateTime;
     reservas: Attribute.Relation<
       'api::mesa.mesa',
@@ -390,9 +463,58 @@ export interface ApiMesaMesa extends Schema.CollectionType {
   };
 }
 
+export interface ApiPedidoPedido extends Schema.CollectionType {
+  collectionName: 'pedidos';
+  info: {
+    displayName: 'Pedido';
+    pluralName: 'pedidos';
+    singularName: 'pedido';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    estado: Attribute.Enumeration<
+      ['Recibido', 'En Preparacion', 'Servido', 'Pagado']
+    >;
+    factura: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToOne',
+      'api::factura.factura'
+    >;
+    mesa: Attribute.Relation<
+      'api::pedido.pedido',
+      'manyToOne',
+      'api::mesa.mesa'
+    >;
+    platillos: Attribute.Relation<
+      'api::pedido.pedido',
+      'manyToMany',
+      'api::platillo.platillo'
+    >;
+    publishedAt: Attribute.DateTime;
+    total: Attribute.Decimal;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::pedido.pedido',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPlatilloPlatillo extends Schema.CollectionType {
   collectionName: 'platillos';
   info: {
+    description: '';
     displayName: 'Platillo';
     pluralName: 'platillos';
     singularName: 'platillo';
@@ -411,8 +533,14 @@ export interface ApiPlatilloPlatillo extends Schema.CollectionType {
     descripcion: Attribute.Blocks;
     foto: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     nombre: Attribute.String;
+    pedidos: Attribute.Relation<
+      'api::platillo.platillo',
+      'manyToMany',
+      'api::pedido.pedido'
+    >;
     precio: Attribute.Decimal;
     publishedAt: Attribute.DateTime;
+    receta: Attribute.Component<'recetas.ingrediente-receta', true>;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<
       'api::platillo.platillo',
@@ -444,6 +572,10 @@ export interface ApiReservaReserva extends Schema.CollectionType {
     > &
       Attribute.Private;
     email_cliente: Attribute.Email;
+    estado: Attribute.Enumeration<
+      ['Pendiente', 'Confirmada', 'Vencida', 'Cancelada']
+    > &
+      Attribute.DefaultTo<'Pendiente'>;
     fecha_hora: Attribute.DateTime;
     mesa: Attribute.Relation<
       'api::reserva.reserva',
@@ -899,7 +1031,10 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::factura.factura': ApiFacturaFactura;
+      'api::insumo.insumo': ApiInsumoInsumo;
       'api::mesa.mesa': ApiMesaMesa;
+      'api::pedido.pedido': ApiPedidoPedido;
       'api::platillo.platillo': ApiPlatilloPlatillo;
       'api::reserva.reserva': ApiReservaReserva;
       'plugin::content-releases.release': PluginContentReleasesRelease;

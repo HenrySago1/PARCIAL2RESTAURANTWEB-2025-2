@@ -32,6 +32,16 @@
     },
     "email_cliente": {
       "type": "email"
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "Pendiente",
+        "Confirmada",
+        "Vencida",
+        "Cancelada"
+      ],
+      "default": "Pendiente"
     }
   }
 }

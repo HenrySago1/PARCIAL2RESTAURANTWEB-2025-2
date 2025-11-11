@@ -22,6 +22,12 @@
       "relation": "oneToMany",
       "target": "api::reserva.reserva",
       "mappedBy": "mesa"
+    },
+    "pedidos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pedido.pedido",
+      "mappedBy": "mesa"
     }
   }
 }

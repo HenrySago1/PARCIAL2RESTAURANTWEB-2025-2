@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_recetas_ingrediente_recetas",
+  "info": {
+    "displayName": "IngredienteReceta",
+    "icon": "shoppingCart"
+  },
+  "options": {},
+  "attributes": {
+    "insumos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::insumo.insumo"
+    },
+    "cantidad": {
+      "type": "decimal"
+    }
+  }
+}

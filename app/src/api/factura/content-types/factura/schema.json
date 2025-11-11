@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "facturas",
+  "info": {
+    "singularName": "factura",
+    "pluralName": "facturas",
+    "displayName": "Factura"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "pedido": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pedido.pedido",
+      "inversedBy": "factura"
+    },
+    "metodo_pago": {
+      "type": "enumeration",
+      "enum": [
+        "Efectivo",
+        "QR",
+        "Tarjeta"
+      ]
+    },
+    "monto_total": {
+      "type": "decimal"
+    }
+  }
+}
